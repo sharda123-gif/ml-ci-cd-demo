@@ -17,18 +17,17 @@ pipeline {
         }
 
         stage('Push to Docker Hub') {
-            environment {
-                DOCKER_USER = credentials('docker-hub-username')
-                DOCKER_PASS = credentials('docker-hub-password')
-            }
-            steps {
-                script {
-                    sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
-                    sh 'docker tag my-ml-app $DOCKER_USER/my-ml-app:latest'
-                    sh 'docker push $DOCKER_USER/my-ml-app:latest'
-                }
-            }
-        }
+           environment {
+                DOCKER_CRED = credentials('docker-hub-username')
+           }
+           steps {
+               script {
+                  sh 'echo $DOCKER_CRED_PSW | docker login -u $DOCKER_CRED_USR --password-stdin'
+                  sh 'docker tag my-ml-app $DOCKER_CRED_USR/my-ml-app:latest'
+                  sh 'docker push $DOCKER_CRED_USR/my-ml-app:latest'
+               }
+           }
+      }
 
         stage('Deploy to EC2') {
             steps {
