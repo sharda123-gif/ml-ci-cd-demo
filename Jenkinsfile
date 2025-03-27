@@ -28,20 +28,6 @@ pipeline {
                }
            }
       }
-
-        stage('Deploy to EC2') {
-            steps {
-                sshagent (credentials: ['ec2-ssh-key']) {
-                    sh '''
-                    ssh -o StrictHostKeyChecking=no ubuntu@13.51.242.236 <<EOF
-                    docker pull docker-hub-username/my-ml-app:latest
-                    docker stop my-ml-app || true
-                    docker rm my-ml-app || true
-                    docker run -d -p 5000:5000 --name my-ml-app docker-hub-username/my-ml-app:latest
-                    EOF
-                    '''
-                }
-            }
-        }
     }
 }
+
