@@ -28,6 +28,28 @@ pipeline {
                }
            }
       }
+      stage('Deploy to Kubernetes') {
+          environment {
+              AWS_CRED = credentials('aws-credentials-id')  // AWS IAM credentials stored in Jenkins
+          }
+          steps {
+              script {
+                  // Configure AWS credentials
+                  sh '''
+                  export AWS_ACCESS_KEY_ID=$AWS_CRED_USR
+                  export AWS_SECRET_ACCESS_KEY=$AWS_CRED_PSW
+                  aws eks --region your-region update-kubeconfig --name my-eks-cluster
+                  '''
+
+                  // Deploy to EKS
+                  sh '''
+                  kubectl apply -f deployment.yaml
+                  kubectl apply -f service.yaml
+                  kubectl get pods
+                  kubectl get services
+                  '''
+              }
+          }
+      }
     }
 }
-
