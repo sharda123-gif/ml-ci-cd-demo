@@ -38,7 +38,7 @@ pipeline {
                   sh '''
                   export AWS_ACCESS_KEY_ID=$AWS_CRED_USR
                   export AWS_SECRET_ACCESS_KEY=$AWS_CRED_PSW
-                  aws eks --region your-region update-kubeconfig --name my-eks-cluster
+                  aws eks --region eu-north-1 update-kubeconfig --name my-eks-cluster
                   '''
 
                   // Deploy to EKS
