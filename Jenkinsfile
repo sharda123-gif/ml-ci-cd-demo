@@ -29,24 +29,22 @@ pipeline {
            }
       }
       stage('Deploy to Kubernetes') {
-    environment {
-        AWS_ACCESS_KEY_ID     = credentials('aws-credentials-id').username
-        AWS_SECRET_ACCESS_KEY = credentials('aws-credentials-id').password
-    }
     steps {
-        script {
-            // Configure kubeconfig
-            sh '''
-            aws eks --region eu-north-1 update-kubeconfig --name my-eks-cluster
-            '''
-
-            // Deploy to EKS
-            sh '''
-            kubectl apply -f deployment.yaml
-            kubectl apply -f service.yaml
-            kubectl get pods
-            kubectl get services
-            '''
+        withCredentials([[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: 'aws-credentials-id',
+            accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+            secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+        ]]) {
+            script {
+                sh '''
+                aws eks --region eu-north-1 update-kubeconfig --name my-eks-cluster
+                kubectl apply -f deployment.yaml
+                kubectl apply -f service.yaml
+                kubectl get pods
+                kubectl get services
+                '''
+            }
         }
     }
 }
