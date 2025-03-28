@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-ml-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my-ml-app
+  template:
+    metadata:
+      labels:
+        app: my-ml-app
+    spec:
+      containers:
+      - name: my-ml-app
+        image: your-docker-hub-username/my-ml-app:latest  # Use your actual Docker Hub username
+        ports:
+        - containerPort: 5000
