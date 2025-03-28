@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: my-ml-app
-        image: your-docker-hub-username/my-ml-app:latest  # Use your actual Docker Hub username
+        image: rasota352/my-ml-app:latest  # Use your actual Docker Hub username
         ports:
         - containerPort: 5000
